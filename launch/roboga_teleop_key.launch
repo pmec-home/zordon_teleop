@@ -1,0 +1,5 @@
+<launch>
+  <!-- roboga_teleop_key already has its own built in velocity smoother -->
+  <node pkg="roboga_teleop" type="roboga_teleop_key" name="roboga_teleop_keyboard"  output="screen">
+  </node>
+</launch>

@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+
+import rospy
+from geometry_msgs.msg import Twist
+import sys, select, termios, tty
+from sensor_msgs.msg import Joy
+
+
+LIMITE_ANGULAR = 0.8203  # em radianos
+
+msg = """
+Controle usando o joystick!
+---------------------------
+Para mover para a direita ou esquerda: direcional analogico esquerdo.
+
+Para acelerar: botao analogico direito.
+
+
+CTRL-C para sair
+"""
+dir_remap = 0.0
+vel_remap = 1.0
+vel = 1.0
+
+
+def remap(x, in_min, in_max, out_min, out_max):
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+
+def myCallback(data):
+    global dir_remap
+    global vel_remap
+
+    dir = data.axes[0]
+    vel = data.axes[3]
+    print("dir= %f, vel=%f" % (dir, vel))
+
+    # Faz o remap dos valores
+    dir_remap = remap(dir, 1.0, -1.0, LIMITE_ANGULAR, -LIMITE_ANGULAR)
+    #vel_remap = remap(vel, -1.0, 1.0, 100, 0)
+    vel_remap = remap(vel, 1.0, -1.0, 10.0, -10.0)  # Limita a velocidade a 10%
+    print("dir_remap= %d, vel_remap=%d" % (dir_remap, vel_remap))
+
+
+def listener():
+    rospy.Subscriber("joy", Joy, myCallback)
+
+    while not rospy.is_shutdown():
+        twist = Twist()
+        twist.linear.x = vel_remap; twist.linear.y = 0; twist.linear.z = 0
+        twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = dir_remap
+        pub.publish(twist)
+        rospy.sleep(0.1)  # sleep for 0.1 second
+
+
+if __name__=="__main__":
+    settings = termios.tcgetattr(sys.stdin)
+
+    print msg
+
+    # Publica no node "cmd_vel"
+    rospy.init_node('roboga_teleop')
+    pub = rospy.Publisher('/Zordon/cmd_vel', Twist, queue_size=5)
+
+    # Subscribe no node "joy"
+    listener()
+
+    # Para o motor e centraliza o servo ao sair do programa
+    print("FIM")
+    twist = Twist()
+    twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
+    twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
+    pub.publish(twist)
+
+    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)

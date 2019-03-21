@@ -1,0 +1,14 @@
+{
+	"name": "roboga_teleop_web",
+	"version": "1.0.0",
+	"description": "To control da movement's base of roboga robot",
+	"scripts": {
+		"roboga_teleop_web": "nodejs scripts/roboga_teleop_web.js"
+	},
+	"keywords": [],
+	"author": "Fellipe Adorno",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"express": "^4.16.4"
+	}
+}

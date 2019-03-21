@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+
+<script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+<script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+<script type="text/javascript" src="keyboardteleop.js"></script>
+<style>
+	table.center {
+		margin-left: auto;
+		margin-right: auto;
+	}
+	body {
+		text-align: center;
+	}
+	button {
+		width: 100%;
+		padding: 30px;
+	}
+</style>
+<script type="text/javascript">
+  /**
+   * Setup all GUI elements when the page is loaded.
+   */
+  function init() {
+    // Connecting to ROS.
+    var ros = new ROSLIB.Ros({
+      url : 'ws://192.168.0.103:9090'
+    });
+
+    // Initialize the teleop.
+    var teleop = new KEYBOARDTELEOP.Teleop({
+      ros : ros,
+      topic : '/Zordon/cmd_vel'
+    });
+
+    // Create a UI slider using JQuery UI.
+    $("button").on("click", function() {
+      teleop.buttonChange($(this).attr("name"));
+    });
+  };
+</script>
+</head>
+
+<body>
+  <table class="center">
+    <tr>
+      <td></td>
+      <td><button name="forward">Forward</button></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><button name="left" width="50%">Left</button></td>
+      <td><button name="stop">stop</button></td>
+      <td><button name="right">Right</button></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><button name="backward">Backward</button></td>
+      <td></td>
+    </tr>
+
+  </table>
+  <script>init();</script>
+</body>
+</html>
