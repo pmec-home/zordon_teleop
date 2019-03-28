@@ -2,11 +2,17 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-//const router = express.Router();
+const ip = require('ip');
+const rosnodejs = require('rosnodejs');
 
-console.log(path.dirname);
+const nh = rosnodejs.nh;
 
+const pub = nh.advertise('/teste', 'std_msgs/String');
+pub.publish({data: "hi"});
+
+const port = 3000;
 app.use(express.static(__dirname+'/public'));
-//app.use('/', router);
-app.listen(3000);
-console.log("listening to port 3000");
+app.listen(port, function() {
+	var host = ip.address();
+	console.log('Listening to http://%s:%s', host, port);
+});
