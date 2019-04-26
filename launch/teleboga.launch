@@ -1,0 +1,5 @@
+<launch>
+  <!-- Inicia script roboga_teleop_joy -->
+  <node pkg="roboga_teleop" type="teleboga.js" name="teleboga_node"  output="screen">
+  </node>
+</launch>
