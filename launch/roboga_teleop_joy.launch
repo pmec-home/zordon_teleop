@@ -1,9 +1,0 @@
-<launch>
-
-  <!-- Inclui e inicia teleop_twist_joy -->
-  <include file="$(find teleop_twist_joy)/launch/teleop.launch"/>
-
-  <!-- Inicia script roboga_teleop_joy -->
-  <node pkg="roboga_teleop" type="roboga_teleop_joy" name="roboga_teleop_joystick"  output="screen">
-  </node>
-</launch>

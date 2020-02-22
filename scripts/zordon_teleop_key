@@ -39,7 +39,7 @@ def vels(target_linear_vel, target_angular_vel):
 if __name__=="__main__":
     settings = termios.tcgetattr(sys.stdin)
 
-    rospy.init_node('roboga_teleop')
+    rospy.init_node('zordon_teleop')
     pub = rospy.Publisher('/Zordon/cmd_vel', Twist, queue_size=5)
 
     status = 0

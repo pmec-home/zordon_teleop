@@ -1,0 +1,9 @@
+<launch>
+
+  <!-- Inclui e inicia teleop_twist_joy -->
+  <include file="$(find teleop_twist_joy)/launch/teleop.launch"/>
+
+  <!-- Inicia script zordon_teleop_joy -->
+  <node pkg="zordon_teleop" type="zordon_teleop_joy" name="zordon_teleop_joystick"  output="screen">
+  </node>
+</launch>

@@ -59,7 +59,7 @@ if __name__=="__main__":
     print msg
 
     # Publica no node "cmd_vel"
-    rospy.init_node('roboga_teleop')
+    rospy.init_node('zordon_teleop')
     pub = rospy.Publisher('/Zordon/cmd_vel', Twist, queue_size=5)
 
     # Subscribe no node "joy"
